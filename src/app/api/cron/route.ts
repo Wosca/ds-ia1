@@ -2,7 +2,7 @@ import { db } from "@/server/db";
 import { NextResponse, NextRequest } from "next/server";
 import { sql } from "drizzle-orm";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   if (
     req.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
   ) {
