@@ -44,7 +44,7 @@ export default function Dashboard() {
       const json = (await response.json()) as CovidStat[];
       return json;
     },
-    refetchInterval: 1000 * 60 * 60, // Refetch every hour
+    refetchInterval: 1000 * 60 * 60,
   });
 
   if (isLoading) {
@@ -82,7 +82,6 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl p-6 lg:p-8">
-        {/* Header */}
         <header className="mb-12">
           <h1 className="text-center text-5xl font-bold text-gray-900">
             COVID&rsquo;19 Daily Overview
@@ -93,7 +92,6 @@ export default function Dashboard() {
           </p>
         </header>
 
-        {/* Global Summary Cards */}
         <section className="mb-12">
           <h2 className="mb-6 text-3xl font-semibold text-gray-800">
             Global Summary
@@ -132,7 +130,6 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Detailed Table */}
         <section className="mb-12">
           <h2 className="mb-6 text-3xl font-semibold text-gray-800">
             Country Statistics
@@ -191,7 +188,6 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Important Information Banner */}
         <section>
           <h2 className="mb-6 text-3xl font-semibold text-gray-800">
             Important Information

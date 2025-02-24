@@ -23,7 +23,7 @@ export async function GET() {
         sql`${covid_daily_stats.country_code} = ${covid_countries.country_code}`,
       )
       .orderBy(desc(covid_daily_stats.total_cases))
-      .limit(50); // Only get top 50 countries by default
+      .limit(50);
 
     return NextResponse.json(stats);
   } catch (error) {

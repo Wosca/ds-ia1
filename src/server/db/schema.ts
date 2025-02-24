@@ -17,7 +17,7 @@ export const users = createTable("user", {
     .$defaultFn(() => crypto.randomUUID()),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
-  role: varchar("role", { length: 50 }).notNull().default("user"), // default is normal user; set to "admin" for admins
+  role: varchar("role", { length: 50 }).notNull().default("user"),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
