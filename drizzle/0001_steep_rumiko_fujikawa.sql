@@ -1,0 +1,1 @@
+ALTER TABLE "covid_daily_stats" ADD CONSTRAINT "covid_daily_stats_country_code_unique" UNIQUE("country_code");

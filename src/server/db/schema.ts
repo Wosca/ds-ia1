@@ -18,11 +18,7 @@ export const users = createTable("user", {
     .$defaultFn(() => crypto.randomUUID()),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
-  emailVerified: timestamp("email_verified", {
-    mode: "date",
-    withTimezone: true,
-  }).default(sql`CURRENT_TIMESTAMP`),
-  image: varchar("image", { length: 255 }),
+  role: varchar("role", { length: 50 }).notNull().default("user"), // default is normal user; set to "admin" for admins
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -39,9 +35,6 @@ export const accounts = createTable(
       .$type<AdapterAccount["type"]>()
       .notNull(),
     provider: varchar("provider", { length: 255 }).notNull(),
-    providerAccountId: varchar("provider_account_id", {
-      length: 255,
-    }).notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -51,9 +44,6 @@ export const accounts = createTable(
     session_state: varchar("session_state", { length: 255 }),
   },
   (account) => ({
-    compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
     userIdIdx: index("account_user_id_idx").on(account.userId),
   }),
 );
@@ -99,24 +89,56 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
-export const covidStats = createTable(
-  "covid_stats",
-  {
-    id: varchar("id", { length: 255 })
-      .notNull()
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    country: varchar("country", { length: 255 }).notNull(),
-    region: varchar("region", { length: 255 }),
-    confirmed: integer("confirmed").notNull(),
-    deaths: integer("deaths").notNull(),
-    recovered: integer("recovered").default(0),
-    updatedAt: timestamp("updated_at", {
-      mode: "date",
-      withTimezone: true,
-    }).default(sql`CURRENT_TIMESTAMP`),
-  },
-  (covid) => ({
-    countryIdx: index("covid_stats_country_idx").on(covid.country),
+
+export const covid_countries = createTable("covid_countries", {
+  country_code: varchar("country_code", { length: 10 }).notNull().primaryKey(),
+  country_name: varchar("country_name", { length: 255 }).notNull(),
+  whoregion: varchar("whoregion", { length: 50 }),
+});
+
+export const covid_cases = createTable("covid_cases", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  date_reported: timestamp("date_reported", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+  country_code: varchar("country_code", { length: 10 })
+    .notNull()
+    .references(() => covid_countries.country_code),
+  new_cases: integer("new_cases"),
+  cumulative_cases: integer("cumulative_cases"),
+  new_deaths: integer("new_deaths"),
+  cumulative_deaths: integer("cumulative_deaths"),
+});
+
+export const covid_daily_stats = createTable("covid_daily_stats", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  country_code: varchar("country_code", { length: 10 })
+    .unique()
+    .notNull()
+    .references(() => covid_countries.country_code),
+  last_updated: timestamp("last_updated", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+  total_cases: integer("total_cases").notNull().default(0),
+  total_deaths: integer("total_deaths").notNull().default(0),
+  new_cases_7day_avg: integer("new_cases_7day_avg").default(0),
+  new_deaths_7day_avg: integer("new_deaths_7day_avg").default(0),
+});
+
+export const covidDailyStatsRelations = relations(
+  covid_daily_stats,
+  ({ one }) => ({
+    country: one(covid_countries, {
+      fields: [covid_daily_stats.country_code],
+      references: [covid_countries.country_code],
+    }),
   }),
 );
