@@ -1,12 +1,12 @@
 import { db } from "@/server/db";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { sql } from "drizzle-orm";
 
-export async function GET(req, res) {
+export async function GET(req: NextRequest, res: NextResponse) {
   if (
     req.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
   ) {
-    return res.status(401).end("Unauthorized");
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   await db.execute(sql`
     WITH MovingAverages AS (
