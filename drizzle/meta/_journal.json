@@ -15,6 +15,13 @@
       "when": 1740401474219,
       "tag": "0001_steep_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740403066325,
+      "tag": "0002_exotic_the_liberteens",
+      "breakpoints": true
     }
   ]
 }
