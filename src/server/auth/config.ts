@@ -1,5 +1,5 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import type { NextAuthConfig } from "next-auth";
 import { db } from "@/server/db";
 
 export const authConfig = {

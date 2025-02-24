@@ -9,7 +9,7 @@ function LoadingSkeleton() {
     <div className="animate-pulse">
       <div className="h-8 w-48 rounded bg-gray-200" />
       <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-3">
-        {[...Array(3)].map((_, i) => (
+        {Array.from({ length: 3 }, (_, i) => (
           <div key={i} className="h-32 rounded-xl bg-gray-200" />
         ))}
       </div>
@@ -41,7 +41,8 @@ export default function Dashboard() {
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
-      return response.json();
+      const json = (await response.json()) as CovidStat[];
+      return json;
     },
     refetchInterval: 1000 * 60 * 60, // Refetch every hour
   });
@@ -60,7 +61,9 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="mx-auto max-w-7xl p-6 lg:p-8">
-          <ErrorState error={error as Error} />
+          <ErrorState
+            error={error instanceof Error ? error : new Error("Unknown error")}
+          />
         </div>
       </div>
     );
@@ -82,7 +85,7 @@ export default function Dashboard() {
         {/* Header */}
         <header className="mb-12">
           <h1 className="text-center text-5xl font-bold text-gray-900">
-            COVID‑19 Daily Overview
+            COVID&rsquo;19 Daily Overview
           </h1>
           <p className="mt-4 text-center text-lg text-gray-600">
             Stay updated with the latest COVID‑19 statistics and travel risk

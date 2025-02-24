@@ -1,14 +1,13 @@
-import { relations, sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   index,
   integer,
   pgTableCreator,
-  primaryKey,
   text,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import type { AdapterAccount } from "next-auth/adapters";
 export const createTable = pgTableCreator((name) => `${name}`);
 
 export const users = createTable("user", {
