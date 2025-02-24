@@ -198,9 +198,9 @@ export default function Dashboard() {
           </h2>
           <div className="rounded-xl border-l-4 border-blue-500 bg-blue-50 p-6 shadow-md">
             <p className="text-lg text-blue-800">
-              Based on today's statistics, travel to high-infection regions is
-              discouraged unless absolutely necessary. Please follow all local
-              guidelines and take necessary precautions including:
+              Based on today&apos;s statistics, travel to high-infection regions
+              is discouraged unless absolutely necessary. Please follow all
+              local guidelines and take necessary precautions including:
             </p>
             <ul className="ml-6 mt-4 list-disc text-blue-700">
               <li>Wearing appropriate face masks</li>
